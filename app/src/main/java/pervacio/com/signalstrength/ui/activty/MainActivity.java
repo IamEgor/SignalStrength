@@ -1,4 +1,4 @@
-package pervacio.com.signalstrength;
+package pervacio.com.signalstrength.ui.activty;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import pervacio.com.signalmeasurer.PhoneSignalStateListener;
 import pervacio.com.signalmeasurer.SignalCriteria;
+import pervacio.com.signalstrength.R;
 
 public class MainActivity extends AppCompatActivity implements
         PhoneSignalStateListener.SignalState {

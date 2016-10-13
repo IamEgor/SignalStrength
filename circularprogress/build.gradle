@@ -1,16 +1,17 @@
-apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
+
     defaultConfig {
-        applicationId "pervacio.com.signalstrength"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -18,14 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
-}
-
-retrolambda {
-    defaultMethods true
 }
 
 dependencies {
@@ -33,15 +26,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-
-    compile project(path: ':signalmeasurer')
-
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-
-
-    compile 'com.google.code.gson:gson:2.7'
-
-    compile 'com.github.akinaru:speedtest:1.21'
+    testCompile 'junit:junit:4.12'
 }

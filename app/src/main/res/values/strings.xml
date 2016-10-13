@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="on_request_string">Signal Strength : %1$dasu or %2$ddBm</string>
     <string name="real_time_string">Signal Strength : %1$dasu %2$s</string>
+    <string name="title_activity_main_pager">MainPagerActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
