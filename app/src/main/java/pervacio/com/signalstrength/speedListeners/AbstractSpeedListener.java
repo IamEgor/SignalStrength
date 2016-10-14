@@ -8,6 +8,7 @@ import java.util.List;
 import fr.bmartel.speedtest.ISpeedTestListener;
 import fr.bmartel.speedtest.SpeedTestError;
 import fr.bmartel.speedtest.SpeedTestReport;
+import pervacio.com.signalstrength.IOnFinish;
 import pervacio.com.signalstrength.MyHandler;
 import pervacio.com.signalstrength.utils.CommonUtils;
 import pervacio.com.signalstrength.utils.Constants;
@@ -19,9 +20,16 @@ public abstract class AbstractSpeedListener implements ISpeedTestListener {
     protected List<Float> mList;
     protected MyHandler mHandler;
     protected long realStartTime;
+    protected IOnFinish mOnFinish;
 
-    public AbstractSpeedListener(MyHandler mHandler) {
-        this.mHandler = mHandler;
+    public AbstractSpeedListener(MyHandler handler) {
+        this.mHandler = handler;
+        mList = new ArrayList<>();
+    }
+
+    public AbstractSpeedListener(MyHandler handler, IOnFinish mOnFinish) {
+        this.mHandler = handler;
+        this.mOnFinish = mOnFinish;
         mList = new ArrayList<>();
     }
 
@@ -76,6 +84,9 @@ public abstract class AbstractSpeedListener implements ISpeedTestListener {
     protected void onStop() {
         if (mHandler != null) {
             mHandler.publish(FINISH, new Rate(mList.get(mList.size() - 1), CommonUtils.getMedian(mList)));
+        }
+        if (mOnFinish != null){
+            mOnFinish.call();
         }
     }
 

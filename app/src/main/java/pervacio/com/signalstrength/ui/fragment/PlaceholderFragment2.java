@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
+import pervacio.com.signalstrength.IOnFinish;
 import pervacio.com.signalstrength.ListenerAndHandler;
 import pervacio.com.signalstrength.R;
 import pervacio.com.signalstrength.WorkerThread;
@@ -19,6 +21,7 @@ import pervacio.com.signalstrength.speedListeners.AbstractSpeedListener;
 import pervacio.com.signalstrength.speedListeners.DownloadSpeedListener;
 import pervacio.com.signalstrength.speedListeners.UploadSpeedListener;
 
+import static pervacio.com.signalstrength.utils.Constants.FILE_SIZE_REGULAR;
 import static pervacio.com.signalstrength.utils.Constants.FINISH;
 import static pervacio.com.signalstrength.utils.Constants.PROGRESS;
 import static pervacio.com.signalstrength.utils.Constants.SPEED_TEST_MAX_DURATION;
@@ -65,13 +68,16 @@ public class PlaceholderFragment2 extends Fragment {
     }
 
     private WorkerThread.WorkerTask mTask1 = (speedTestSocket, handler) -> {
-        speedTestSocket.addSpeedTestListener(new DownloadSpeedListener(handler));
-        speedTestSocket.startFixedUpload(
+        IOnFinish iOnFinish = () -> {
+        };
+        speedTestSocket.addSpeedTestListener(new DownloadSpeedListener(handler, iOnFinish));
+        speedTestSocket.startFixedDownload(
                 SPEED_TEST_SERVER_HOST,
                 SPEED_TEST_SERVER_PORT,
                 SPEED_TEST_SERVER_URI_DL,
                 SPEED_TEST_MAX_DURATION,
                 SPEED_TEST_REPORT_INTERVAL);
+        return iOnFinish;
     };
 
     private Handler.Callback mCallback1 = msg -> {
@@ -98,9 +104,35 @@ public class PlaceholderFragment2 extends Fragment {
                 SPEED_TEST_SERVER_HOST,
                 SPEED_TEST_SERVER_PORT,
                 SPEED_TEST_SERVER_URI_DL,
-                SPEED_TEST_MAX_DURATION ,
+                FILE_SIZE_REGULAR,
+                SPEED_TEST_MAX_DURATION,
                 SPEED_TEST_REPORT_INTERVAL);
+        return null;
     };
+
+    private void m() {
+        A a = new A();
+        a.run();
+
+        B b = new B();
+        b.call();
+    }
+
+    class A implements Runnable {
+
+        @Override
+        public void run() {
+
+        }
+    }
+
+    class B implements Callable<String> {
+
+        @Override
+        public String call() {
+            return null;
+        }
+    }
 
     private Handler.Callback mCallback2 = msg -> {
         switch (msg.arg1) {

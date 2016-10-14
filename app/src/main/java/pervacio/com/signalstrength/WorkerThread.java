@@ -28,15 +28,16 @@ public class WorkerThread extends HandlerThread {
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
         for (ListenerAndHandler listenerAndHandler : mListenerAndHandlers) {
             WorkerTask mWorkerTask = listenerAndHandler.mWorkerTask;
+            mWorkerTask.execute()
             Handler.Callback mCallback = listenerAndHandler.mCallback;
             MyHandler handler = new MyHandler(Looper.getMainLooper(), mCallback);
             mWorkerTask.execute(speedTestSocket, handler);
-//            SystemClock.sleep(SPEED_TEST_MAX_DURATION + 1000);
+            SystemClock.sleep(SPEED_TEST_MAX_DURATION + 2000);
         }
     }
 
     public interface WorkerTask {
-        void execute(SpeedTestSocket speedTestSocket, MyHandler handler);
+        IOnFinish execute(SpeedTestSocket speedTestSocket, MyHandler handler);
     }
 
 }

@@ -12,6 +12,7 @@ public class Constants {
     public static final String SPEED_TEST_SERVER_HOST = "2.testdebit.info";
     public static final int SPEED_TEST_SERVER_PORT = 80;
     public static final String SPEED_TEST_SERVER_URI_DL = "/fichiers/1000Mo.dat";
+    public static final int FILE_SIZE_REGULAR = 1000000;
     public static final int SPEED_TEST_MAX_DURATION = 10000;
     public static final int SPEED_TEST_REPORT_INTERVAL = 100;
 
