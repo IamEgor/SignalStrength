@@ -22,6 +22,7 @@ public abstract class AbstractSpeedListener implements ISpeedTestListener {
     protected long realStartTime;
     protected IOnFinish mOnFinish;
 
+    @Deprecated
     public AbstractSpeedListener(MyHandler handler) {
         this.mHandler = handler;
         mList = new ArrayList<>();
@@ -86,7 +87,7 @@ public abstract class AbstractSpeedListener implements ISpeedTestListener {
             mHandler.publish(FINISH, new Rate(mList.get(mList.size() - 1), CommonUtils.getMedian(mList)));
         }
         if (mOnFinish != null){
-            mOnFinish.call();
+            mOnFinish.onFinish();
         }
     }
 

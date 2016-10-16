@@ -1,6 +1,7 @@
 package pervacio.com.signalstrength.speedListeners;
 
 import fr.bmartel.speedtest.SpeedTestReport;
+import pervacio.com.signalstrength.IOnFinish;
 import pervacio.com.signalstrength.MyHandler;
 
 public class UploadSpeedListener extends AbstractSpeedListener {
@@ -9,6 +10,10 @@ public class UploadSpeedListener extends AbstractSpeedListener {
 
     public UploadSpeedListener(MyHandler myHandler) {
         super(myHandler);
+    }
+
+    public UploadSpeedListener(MyHandler handler, IOnFinish mOnFinish) {
+        super(handler, mOnFinish);
     }
 
     @Override

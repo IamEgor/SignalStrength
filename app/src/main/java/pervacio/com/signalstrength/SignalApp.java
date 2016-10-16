@@ -6,6 +6,7 @@ import android.content.Context;
 public class SignalApp extends Application {
 
     private static Context sContext;
+    private Router router;
 
     @Override
     public void onCreate() {
@@ -15,6 +16,10 @@ public class SignalApp extends Application {
 
     public static Context getContext() {
         return sContext;
+    }
+
+    public Router getRouter() {
+        return router;
     }
 
 }

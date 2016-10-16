@@ -2,13 +2,14 @@ package pervacio.com.signalstrength.utils;
 
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CommonUtils {
+
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     public static float getJitter(List<Float> latencies) {
         float jitter = 0f;
@@ -51,6 +52,10 @@ public class CommonUtils {
         for (String message : splitOnChars(longMessage)) {
             Log.w(tag, message);
         }
+    }
+
+    public static int generateId() {
+        return sNextGeneratedId.get();
     }
 
 }

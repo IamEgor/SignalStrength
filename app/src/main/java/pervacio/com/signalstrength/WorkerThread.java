@@ -1,15 +1,10 @@
 package pervacio.com.signalstrength;
 
-import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.SystemClock;
 
 import java.util.List;
 
 import fr.bmartel.speedtest.SpeedTestSocket;
-
-import static pervacio.com.signalstrength.utils.Constants.SPEED_TEST_MAX_DURATION;
 
 public class WorkerThread extends HandlerThread {
 
@@ -25,19 +20,20 @@ public class WorkerThread extends HandlerThread {
     @Override
     protected void onLooperPrepared() {
         super.onLooperPrepared();
-        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
-        for (ListenerAndHandler listenerAndHandler : mListenerAndHandlers) {
-            WorkerTask mWorkerTask = listenerAndHandler.mWorkerTask;
-            mWorkerTask.execute()
-            Handler.Callback mCallback = listenerAndHandler.mCallback;
-            MyHandler handler = new MyHandler(Looper.getMainLooper(), mCallback);
-            mWorkerTask.execute(speedTestSocket, handler);
-            SystemClock.sleep(SPEED_TEST_MAX_DURATION + 2000);
-        }
+//        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
+//        for (ListenerAndHandler listenerAndHandler : mListenerAndHandlers) {
+//            WorkerTask mWorkerTask = listenerAndHandler.mWorkerTask;
+//            Handler.Callback mCallback = listenerAndHandler.mCallback;
+//            MyHandler handler = new MyHandler(Looper.getMainLooper(), mCallback);
+//            mWorkerTask.execute(speedTestSocket, handler, null);
+////            SystemClock.sleep(SPEED_TEST_MAX_DURATION + 2000);
+//        }
+        final Router router = new Router(mListenerAndHandlers);
+        router.route();
     }
 
     public interface WorkerTask {
-        IOnFinish execute(SpeedTestSocket speedTestSocket, MyHandler handler);
+        void execute(SpeedTestSocket speedTestSocket, MyHandler handler, IOnFinish onFinish);
     }
 
 }
