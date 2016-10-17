@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="100dp"
     android:orientation="vertical"
     android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -23,6 +22,10 @@
             android:id="@+id/wifiDownloadSpeedProgress"
             style="@style/MeasurerProgressStyle" />
 
+        <ImageView
+            android:id="@+id/restart_download"
+            style="@style/RestartSpeedTest" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -40,6 +43,15 @@
             android:id="@+id/wifiUploadSpeedProgress"
             style="@style/MeasurerProgressStyle" />
 
+        <ImageView
+            android:id="@+id/restart_upload"
+            style="@style/RestartSpeedTest" />
+
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/wifiStr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

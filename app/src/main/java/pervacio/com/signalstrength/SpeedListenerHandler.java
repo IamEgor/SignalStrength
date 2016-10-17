@@ -6,9 +6,9 @@ import android.os.Message;
 
 import pervacio.com.signalstrength.utils.Constants;
 
-public class MyHandler extends Handler {
+public class SpeedListenerHandler extends Handler {
 
-    public MyHandler(Looper looper, Callback callback) {
+    public SpeedListenerHandler(Looper looper, Callback callback) {
         super(looper, callback);
     }
 

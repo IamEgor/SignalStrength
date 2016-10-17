@@ -10,30 +10,24 @@ public class WorkerThread extends HandlerThread {
 
     public static final String TAG = WorkerThread.class.getSimpleName();
 
-    private List<ListenerAndHandler> mListenerAndHandlers;
+    private List<ListenerAndHandlerWrapper> mListenerAndHandlers;
+    private Router.LastListenerFinished mLastListenerFinished;
 
-    public WorkerThread(List<ListenerAndHandler> listenerAndHandlers) {
+    public WorkerThread(List<ListenerAndHandlerWrapper> listenerAndHandlers, Router.LastListenerFinished lastListenerFinished) {
         super(TAG);
         mListenerAndHandlers = listenerAndHandlers;
+        mLastListenerFinished = lastListenerFinished;
     }
 
     @Override
     protected void onLooperPrepared() {
         super.onLooperPrepared();
-//        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
-//        for (ListenerAndHandler listenerAndHandler : mListenerAndHandlers) {
-//            WorkerTask mWorkerTask = listenerAndHandler.mWorkerTask;
-//            Handler.Callback mCallback = listenerAndHandler.mCallback;
-//            MyHandler handler = new MyHandler(Looper.getMainLooper(), mCallback);
-//            mWorkerTask.execute(speedTestSocket, handler, null);
-////            SystemClock.sleep(SPEED_TEST_MAX_DURATION + 2000);
-//        }
-        final Router router = new Router(mListenerAndHandlers);
+        final Router router = new Router(mListenerAndHandlers, mLastListenerFinished);
         router.route();
     }
 
     public interface WorkerTask {
-        void execute(SpeedTestSocket speedTestSocket, MyHandler handler, IOnFinish onFinish);
+        void execute(SpeedTestSocket speedTestSocket, SpeedListenerHandler handler, ISpeedListenerFinishCallback onFinish);
     }
 
 }

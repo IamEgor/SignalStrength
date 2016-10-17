@@ -1,6 +1,7 @@
 package pervacio.com.signalstrength.speedListeners;
 
 import android.os.Message;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,86 +9,96 @@ import java.util.List;
 import fr.bmartel.speedtest.ISpeedTestListener;
 import fr.bmartel.speedtest.SpeedTestError;
 import fr.bmartel.speedtest.SpeedTestReport;
-import pervacio.com.signalstrength.IOnFinish;
-import pervacio.com.signalstrength.MyHandler;
+import pervacio.com.signalstrength.ISpeedListenerFinishCallback;
+import pervacio.com.signalstrength.SpeedListenerHandler;
+import pervacio.com.signalstrength.StopWaiter;
 import pervacio.com.signalstrength.utils.CommonUtils;
 import pervacio.com.signalstrength.utils.Constants;
 
 import static pervacio.com.signalstrength.utils.Constants.FINISH;
 
-public abstract class AbstractSpeedListener implements ISpeedTestListener {
+public abstract class AbstractSpeedListener implements
+        ISpeedTestListener,
+        StopWaiter.OnTimerStop {
 
-    protected List<Float> mList;
-    protected MyHandler mHandler;
-    protected long realStartTime;
-    protected IOnFinish mOnFinish;
+    private static final String TAG = AbstractSpeedListener.class.getSimpleName();
 
-    @Deprecated
-    public AbstractSpeedListener(MyHandler handler) {
-        this.mHandler = handler;
-        mList = new ArrayList<>();
-    }
+    private List<Float> mList;
+    private SpeedListenerHandler mHandler;
+    private long realStartTime;
+    private ISpeedListenerFinishCallback mOnFinish;
+    private StopWaiter mStopWaiter;
 
-    public AbstractSpeedListener(MyHandler handler, IOnFinish mOnFinish) {
+    protected AbstractSpeedListener(SpeedListenerHandler handler, ISpeedListenerFinishCallback mOnFinish) {
         this.mHandler = handler;
         this.mOnFinish = mOnFinish;
         mList = new ArrayList<>();
+        mStopWaiter = new StopWaiter(this);
     }
 
     @Override
     public void onDownloadFinished(SpeedTestReport report) {
-
     }
 
     @Override
     public void onDownloadProgress(float percent, SpeedTestReport report) {
-
     }
 
     @Override
     public void onDownloadError(SpeedTestError speedTestError, String errorMessage) {
-
     }
 
     @Override
     public void onUploadFinished(SpeedTestReport report) {
-
+        Log.d(TAG, "onUploadFinished() called with: report = [" + report + "]");
     }
 
     @Override
     public void onUploadError(SpeedTestError speedTestError, String errorMessage) {
-
     }
 
     @Override
     public void onUploadProgress(float percent, SpeedTestReport report) {
-
     }
 
     @Override
     public void onInterruption() {
+    }
 
+    @Override
+    public void onTimerStop() {
+        Log.d(TAG, "onTimerStop() called");
+        onStop();
     }
 
     protected void onUpdate(SpeedTestReport report) {
+        Log.d(TAG, "onUpdate() called with: report = [" + report.getTransferRateBit().floatValue() / 1000 / 1000 + "]" + report.getProgressPercent());
         if (mHandler == null) {
             return;
         }
         if (realStartTime == 0) {
             realStartTime = report.getReportTime();
             mHandler.publish(Constants.START);
+            mStopWaiter.start();
+        } else if (report.getProgressPercent() == 100) {
+            onStop();
         } else {
-            mList.add(report.getTransferRateBit().floatValue() / 1024 / 1024);
+            float e = report.getTransferRateBit().floatValue() / 1000 / 1000;
+            mStopWaiter.updateTimer();
+            if (e != 0) {
+                mList.add(e);
+                mHandler.publish(Constants.PROGRESS, (int) ((report.getReportTime() - realStartTime) / 100) + 1);
+            }
         }
-        mHandler.publish(Constants.PROGRESS, (int) ((report.getReportTime() - realStartTime) / 100) + 1);
     }
 
     protected void onStop() {
+        Log.d(TAG, "onStop() called");
         if (mHandler != null) {
             mHandler.publish(FINISH, new Rate(mList.get(mList.size() - 1), CommonUtils.getMedian(mList)));
         }
-        if (mOnFinish != null){
-            mOnFinish.onFinish();
+        if (mOnFinish != null) {
+            mOnFinish.onSpeedListenerFinish(this);
         }
     }
 

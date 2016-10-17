@@ -45,12 +45,20 @@
     <style name="MeasurerProgressStyle" parent="@style/Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:visibility">invisible</item>
         <item name="android:layout_marginTop">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_alignParentEnd">true</item>
         <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="RestartSpeedTest">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_done_grey_48dp</item>
     </style>
 
 </resources>
